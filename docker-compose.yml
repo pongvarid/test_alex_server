@@ -28,9 +28,9 @@ services:
     restart: always
     build: .
     volumes:
-      - .:/vps_effort_server
-    image: app:vps_server
-    container_name: vps_server
+      - .:/test_alex_server
+    image: app:test_alex
+    container_name: test_alex
     command: >
      sh -c "python manage.py collectstatic --noinput && python manage.py makemigrations && python manage.py makemigrations account &&
              python manage.py migrate &&   
