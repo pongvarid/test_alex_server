@@ -1,0 +1,8 @@
+.env
+db.sqlite3
+.idea
+__pycache__
+*/migrations/*
+!*/migrations/__init__.py
+.DS_Store
+product_images/
