@@ -9,9 +9,9 @@ services:
     restart: always
     command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --innodb_monitor_enable=all, --max-connections=1001]
     environment:
-      - MYSQL_DATABASE=vps
-      - MYSQL_USER=vps
-      - MYSQL_PASSWORD=Vps@1234
+      - MYSQL_DATABASE=alex
+      - MYSQL_USER=alex
+      - MYSQL_PASSWORD=Alex@1234
       - MYSQL_ROOT_PASSWORD=Root@1234
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
 
