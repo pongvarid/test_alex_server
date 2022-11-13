@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.hashers import check_password, make_password
 
 from account.models import Account, Commission, Referrer
 from company.models import Customer
@@ -39,6 +40,19 @@ class AccountAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'email', 'level','company', 'created_at', 'updated_at')
     list_filter = ('company','tier', 'created_at', 'updated_at', 'is_active')
     search_fields = ('company__name','tier__level','first_name', 'last_name', 'email','created_at', 'updated_at')
+
+    def save_model(self, request, obj, form, change):
+        try:
+            user_database = Account.objects.get(pk=obj.pk)
+        except Exception:
+            user_database = None
+        if user_database is None \
+                or not (check_password(form.data['password'], user_database.password)
+                        or user_database.password == form.data['password']):
+            obj.password = make_password(obj.password)
+        else:
+            obj.password = user_database.password
+        super().save_model(request, obj, form, change)
 
 admin.site.register(Account, AccountAdmin)
 
