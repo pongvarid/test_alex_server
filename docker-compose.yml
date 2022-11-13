@@ -1,0 +1,43 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - "33088:3306"
+    restart: always
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --innodb_monitor_enable=all, --max-connections=1001]
+    environment:
+      - MYSQL_DATABASE=vps
+      - MYSQL_USER=vps
+      - MYSQL_PASSWORD=Vps@1234
+      - MYSQL_ROOT_PASSWORD=Root@1234
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+
+  phpmyadmin_master:
+    restart: always
+    image: phpmyadmin/phpmyadmin:5.1.1
+    ports:
+    - 8088:80
+    environment:
+      PMA_HOSTS: mysql
+
+
+  app:
+    restart: always
+    build: .
+    volumes:
+      - .:/vps_effort_server
+    image: app:vps_server
+    container_name: vps_server
+    command: >
+     sh -c "python manage.py collectstatic --noinput && python manage.py makemigrations && python manage.py makemigrations account &&
+             python manage.py migrate &&   
+             python manage.py shell < create_root.py &&  
+             uwsgi --ini uwsgi.ini"
+    ports:
+      - "8005:8005"
+    depends_on:
+      - mysql
+
