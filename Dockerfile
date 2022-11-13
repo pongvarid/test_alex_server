@@ -17,7 +17,7 @@ RUN apt-get install -y cron systemctl rsyslog nano
 #CMD systemctl enable cron && systemctl start cron
 
 ENV PYTHONUNBUFFERED=1
-WORKDIR /vps_effort_server
+WORKDIR /test_alex_server
 COPY requirements.txt /test_alex_server/
 RUN pip install ez_setup
 RUN pip install uwsgi
